@@ -1,56 +1,50 @@
 import request from '@/utils/request'
 
-const api_name = '/admin/acl/role'
+const api_name = '/rabbit/acl/acl-role'
 
 export default {
 
-    getPageList(page, limit, searchObj) {
+    pageRole(rolePage) {
         return request({
-            url: `${api_name}/${page}/${limit}`,
+            url: `${api_name}/page`,
             method: 'get',
-            params: searchObj // url查询字符串或表单键值对
+            data: rolePage // url查询字符串或表单键值对
         })
     },
-    getById(id) {
+    roleDetails(id) {
         return request({
-          url: `${api_name}/get/${id}`,
-          method: 'get'
+            url: `${api_name}/${id}`,
+            method: 'get'
         })
-      },
-    
-      save(role) {
+    },
+
+    saveRole(role) {
         return request({
-          url: `${api_name}/save`,
-          method: 'post',
-          data: role
+            url: `${api_name}`,
+            method: 'post',
+            data: role
         })
-      },
-    
-      updateById(role) {
+    },
+
+    updateRole(role) {
         return request({
-          url: `${api_name}/update`,
-          method: 'put',
-          data: role
+            url: `${api_name}`,
+            method: 'put',
+            data: role
         })
-      },
-      getAssign(roleId){
+    },
+    removeRole(id) {
         return request({
-          url: `${api_name}/toAssign/${roleId}`,
-          method: 'get'
+            url: `${api_name}/${id}`,
+            method: 'delete'
         })
-      },
-      removeById(id){
+    },
+    removeBatchRole(idList) {
         return request({
-          url: `${api_name}/remove/${id}`,
-          method: 'delete'
+            url: `${api_name}`,
+            method: 'delete',
+            data: idList
         })
-      },
-      removeRows(idList){
-        return request({
-          url: `${api_name}/batchRemove`,
-          method: 'delete',
-          data:idList
-        })
-      }
-      
+    }
+
 }

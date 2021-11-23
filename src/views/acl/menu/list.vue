@@ -173,8 +173,7 @@ export default {
     fetchNodeList() {
       menu.getNestedTreeList().then(response => {
         if (response.success === true) {
-          this.menuList = response.data.children
-          console.log(this.menuList)
+          this.menuList = response.children
         }
       })
     },
@@ -183,8 +182,6 @@ export default {
       return data.title.toLowerCase().indexOf(value.toLowerCase()) !== -1
     },
     remove(data) {
-      console.log(data)
-
       this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
