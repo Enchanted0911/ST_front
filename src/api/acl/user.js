@@ -4,59 +4,46 @@ const api_name = '/rabbit/acl/acl-user'
 
 export default {
 
-    getPageList(page, limit, searchObj) {
+    userDetails(id) {
         return request({
-            url: `${api_name}/${page}/${limit}`,
+            url: `${api_name}/${id}`,
             method: 'get',
-            params: searchObj // url查询字符串或表单键值对
         })
     },
-    getById(id) {
+    saveAclUser(aclUser) {
         return request({
-            url: `${api_name}/get/${id}`,
-            method: 'get'
-        })
-    },
-
-    save(user) {
-        return request({
-            url: `${api_name}/save`,
+            url: `${api_name}`,
             method: 'post',
-            data: user
+            data: aclUser
         })
     },
 
-    updateById(user) {
+    pageUser(userPage) {
+        return request({
+            url: `${api_name}/page`,
+            method: 'get',
+            data: userPage
+        })
+    },
+
+    updateUser(user) {
         return request({
             url: `${api_name}/update`,
             method: 'put',
             data: user
         })
     },
-    getAssign(userId) {
+    removeUser(userId) {
         return request({
-            url: `${api_name}/toAssign/${userId}`,
-            method: 'get'
-        })
-    },
-    saveAssign(userId, roleId) {
-        return request({
-            url: `${api_name}/doAssign`,
-            method: 'post',
-            params: { userId, roleId }
-        })
-    },
-    removeById(id) {
-        return request({
-            url: `${api_name}/remove/${id}`,
+            url: `${api_name}/${userId}`,
             method: 'delete'
         })
     },
-    removeRows(idList) {
+    removeBatchUser(userIdList) {
         return request({
-            url: `${api_name}/batchRemove`,
-            method: 'delete',
-            data: idList
+            url: `${api_name}`,
+            method: 'post',
+            data: userIdList
         })
     }
 }

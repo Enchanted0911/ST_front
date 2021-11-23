@@ -9,11 +9,11 @@ export default {
             method: 'get'
         })
     },
-    doAssign(roleId, permissionId) {
+    doAssign(rolePermission) {
         return request({
             url: `${api_name}`,
             method: "post",
-            params: { roleId, permissionId }
+            data: rolePermission
         })
     }
 }

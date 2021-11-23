@@ -1,5 +1,5 @@
 import { constantRoutes } from '@/router'
-import { getMenu } from '@/api/login'
+import { getMenu } from '@/api/acl/login'
 import Layout from '@/layout/Layout'
 
 function filterAsyncRouter(asyncRouterMap) { // 遍历后台传来的路由字符串，转换为组件对象

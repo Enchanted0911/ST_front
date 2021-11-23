@@ -1,9 +1,18 @@
 import request from '@/utils/request'
+
+const api_name = '/rabbit/back/subject'
+
 export default {
-    //1 课程分类列表
-    getSubjectList() {
+    saveSubjectByExcel(file) {
         return request({
-            url: '/eduService/subject/getAllSubject',
+            url: `${api_name}`,
+            method: 'post',
+            data: file
+        })
+    },
+    gainSubject() {
+        return request({
+            url: `${api_name}`,
             method: 'get'
         })
     }

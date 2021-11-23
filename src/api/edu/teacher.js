@@ -1,45 +1,45 @@
 import request from '@/utils/request'
+
+const api_name = '/rabbit/back/teacher'
+
 export default {
-    //1 讲师列表（条件查询分页）
-    //current当前页 limit每页记录数 teacherQuery条件对象
-    getTeacherListPage(current, limit, teacherQuery) {
+    listTeacher() {
         return request({
-            //url: '/eduservice/teacher/pageTeacherCondition/'+current+"/"+limit,
-            url: `/eduService/teacher/pageTeacherCondition/${current}/${limit}`,
-            method: 'post',
-            //teacherQuery条件对象，后端使用RequestBody获取数据
-            //data表示把对象转换json进行传递到接口里面
-            data: teacherQuery
-        })
-    },
-    //删除讲师
-    deleteTeacherId(id) {
-        return request({
-            url: `/eduService/teacher/${id}`,
-            method: 'delete'
-        })
-    },
-    //添加讲师
-    addTeacher(teacher) {
-        return request({
-            url: `/eduService/teacher/addTeacher`,
-            method: 'post',
-            data: teacher
-        })
-    },
-    //根据id查询讲师
-    getTeacherInfo(id) {
-        return request({
-            url: `/eduService/teacher/getTeacher/${id}`,
+            url: `${api_name}`,
             method: 'get'
         })
     },
-    //修改讲师
-    updateTeacherInfo(teacher) {
+    removeTeacher(id) {
         return request({
-            url: `/eduService/teacher/updateTeacher`,
+            url: `${api_name}/${id}`,
+            method: 'delete'
+        })
+    },
+    pageTeacher(teacherPage) {
+        return request({
+            url: `${api_name}/page`,
+            method: 'get',
+            data: teacherPage
+        })
+    },
+    saveTeacher(teacher) {
+        return request({
+            url: `${api_name}`,
             method: 'post',
             data: teacher
+        })
+    },
+    updateTeacher(teacher) {
+        return request({
+            url: `${api_name}`,
+            method: 'put',
+            data: teacher
+        })
+    },
+    teacherDetails(id) {
+        return request({
+            url: `${api_name}/${id}`,
+            method: 'get'
         })
     }
 }

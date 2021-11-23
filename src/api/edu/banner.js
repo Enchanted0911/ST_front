@@ -1,38 +1,39 @@
 import request from '@/utils/request'
+
+const api_name = '/rabbit/back/banner-management'
+
 export default {
-    getBannerListPage(page, pageSize, bannerQuery) {
+    pageBanner(bannerPage) {
         return request({
-            url: `/eduCms/bannerAdmin/pageBanner/${page}/${pageSize}`,
-            method: 'post',
-            //teacherQuery条件对象，后端使用RequestBody获取数据
-            //data表示把对象转换json进行传递到接口里面
-            data: bannerQuery
+            url: `${api_name}/page`,
+            method: 'get',
+            data: bannerPage
         })
     },
-    deleteBannerById(id) {
+    saveBanner(banner) {
         return request({
-            url: `/eduCms/bannerAdmin/${id}`,
-            method: 'delete'
-        })
-    },
-    addBanner(banner) {
-        return request({
-            url: `/eduCms/bannerAdmin`,
+            url: `${api_name}`,
             method: 'post',
             data: banner
         })
     },
-    getBannerInfo(id) {
+    removeBanner(id) {
         return request({
-            url: `/eduCms/bannerAdmin/${id}`,
-            method: 'get'
+            url: `${api_name}/${id}`,
+            method: 'delete',
         })
     },
-    updateBannerInfo(banner) {
+    updateBanner(banner) {
         return request({
-            url: `/eduCms/bannerAdmin/`,
+            url: `${api_name}`,
             method: 'put',
             data: banner
+        })
+    },
+    bannerDetails(id) {
+        return request({
+            url: `${api_name}/${id}`,
+            method: 'get'
         })
     }
 }

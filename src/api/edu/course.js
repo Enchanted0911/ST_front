@@ -1,62 +1,57 @@
 import request from '@/utils/request'
+
+const api_name = '/rabbit/back/course'
+
 export default {
-    //1 添加课程信息
-    addCourseInfo(courseInfo) {
+    gainCourseOutline(id) {
         return request({
-            url: '/eduService/course/addCourseInfo',
+            url: `${api_name}/${id}`,
+            method: 'get',
+        })
+    },
+    pageCourse(coursePage) {
+        return request({
+            url: `${api_name}`,
+            method: 'get',
+            data: coursePage
+        })
+    },
+    saveCourseBaseInfo(courseBaseInfo) {
+        return request({
+            url: `${api_name}`,
             method: 'post',
-            data: courseInfo
+            data: courseBaseInfo
         })
     },
-    //2 查询所有讲师
-    getListTeacher() {
+    gainCourseBaseInfo(id) {
         return request({
-            url: '/eduService/teacher/findAll',
+            url: `${api_name}/${id}`,
+            method: 'get',
+        })
+    },
+    updateCourseBaseInfo(courseBaseInfo) {
+        return request({
+            url: `${api_name}`,
+            method: 'put',
+            data: courseBaseInfo
+        })
+    },
+    gainCoursePublishInfo(id) {
+        return request({
+            url: `${api_name}/publish-info/${id}`,
             method: 'get'
         })
     },
-    //根据课程id查询课程基本信息
-    getCourseInfoId(id) {
-        return request({
-            url: '/eduService/course/getCourseInfo/' + id,
-            method: 'get'
-        })
-    },
-    //修改课程信息
-    updateCourseInfo(courseInfo) {
-        return request({
-            url: '/eduService/course/updateCourseInfo',
-            method: 'post',
-            data: courseInfo
-        })
-    },
-    //课程确认信息显示
-    getPublishCourseInfo(id) {
-        return request({
-            url: '/eduService/course/getPublishCourseInfo/' + id,
-            method: 'get'
-        })
-    },
-    //课程最终发布
     publishCourse(id) {
         return request({
-            url: '/eduService/course/publishCourse/' + id,
-            method: 'post'
+            url: `${api_name}/publish-info/${id}`,
+            method: 'put'
         })
     },
-    deleteCourseId(id) {
+    removeCourse(id) {
         return request({
-            url: `/eduService/course/${id}`,
+            url: `${api_name}/${id}`,
             method: 'delete'
-        })
-    },
-    //1 课程列表（条件查询分页）
-    //current当前页 limit每页记录数 courseQuery条件对象
-    getCourseListPage(current, limit, courseQuery) {
-        return request({
-            url: `/eduService/course/pageCourseCondition/${current}/${limit}`,
-            method: 'post',
-            data: courseQuery
         })
     },
 }
