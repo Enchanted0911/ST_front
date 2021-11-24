@@ -115,7 +115,7 @@ export default {
       // 异步获取远程数据（ajax）
       this.page = page
 
-      roleApi.getPageList(this.page, this.limit, this.searchObj).then(
+      roleApi.pageRole(this.page, this.limit, this.searchObj).then(
         response => {
           this.list = response.data.items
           this.total = response.data.total
@@ -141,7 +141,7 @@ export default {
         type: 'warning'
       }).then(() => { // promise
         // 点击确定，远程调用ajax
-        return roleApi.removeById(id)
+        return roleApi.removeRole(id)
       }).then((response) => {
         this.fetchData(this.page)
         if (response.success) {
@@ -190,7 +190,7 @@ export default {
         // console.log(idList)
         })
         // 调用api
-        return roleApi.removeRows(idList)
+        return roleApi.removeBatchRole(idList)
       }).then((response) => {
         this.fetchData(this.page)
         if (response.success) {

@@ -13,7 +13,7 @@
   </div>
 </template>
 <script>
-import menu from '@/api/acl/menu'
+import rolePermission from '@/api/acl/role-permission'
 
 export default {
   data() {
@@ -47,7 +47,7 @@ export default {
       } 
     },
     fetchDataById(roleId){
-        menu.toAssign(roleId).then(response => {
+        rolePermission.toAssign(roleId).then(response => {
             this.data = response.data.children
             var jsonList = JSON.parse(JSON.stringify(this.data))
             var list = []
@@ -78,7 +78,7 @@ export default {
       //vue elementUI tree树形控件获取父节点ID的实例
       //node_modules\element-ui\lib\element-ui.common.js
       //25348行修改源码
-      menu.doAssign(this.roleId, ids).then(response => {
+      rolePermission.doAssign(this.roleId, ids).then(response => {
           if(response.success){
               this.$message({
                 type:'success',

@@ -1,4 +1,5 @@
-import { login, logout, getInfo } from '@/api/login'
+import { login, logout } from '@/api/acl/login'
+import { info } from '@/api/acl/acl'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
@@ -49,12 +50,12 @@ const user = {
         // 获取用户信息
         async GetInfo({ commit, state }) {
             return new Promise((resolve, reject) => {
-                getInfo(state.token).then(response => {
+                info(state.token).then(response => {
                     const data = response.data
                     if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
                         commit('SET_ROLES', data.roles)
                     } else {
-                        reject('getInfo: roles must be a non-null array !')
+                        reject('info: roles must be a non-null array !')
                     }
 
                     const buttonAuthList = []

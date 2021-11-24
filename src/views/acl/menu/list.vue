@@ -114,7 +114,7 @@
 </template>
 
 <script>
-import menu from '@/api/acl/menu'
+import permission from '@/api/acl/permission'
 
 const menuForm = {
   name: '',
@@ -171,9 +171,9 @@ export default {
 
   methods: {
     fetchNodeList() {
-      menu.getNestedTreeList().then(response => {
+      permission.gainAllPermission().then(response => {
         if (response.success === true) {
-          this.menuList = response.children
+          this.menuList = response.data
         }
       })
     },
@@ -187,7 +187,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        return menu.removeById(data.id)
+        return menu.deletePermission(data.id)
       }).then(() => {
         this.fetchNodeList()// 刷新列表
         this.$message({
@@ -214,7 +214,7 @@ export default {
           if (this.permission.id) {
             this.update(this.permission)
           } else {
-            menu.saveLevelOne(this.permission).then(response => {
+            permission.savePermission(this.permission).then(response => {
               this.dialogPermissionVisible = false
               this.$message({
                 type: 'success',
@@ -230,7 +230,7 @@ export default {
       })
     },
     appendLevelOne() {
-      menu.saveLevelOne(this.menu)
+      permission.savePermission(this.menu)
         .then(response => {
           this.dialogFormVisible = false
           this.$message({
@@ -271,7 +271,7 @@ export default {
     },
 
     update(obj) {
-      menu.update(obj).then(response => {
+      permission.updatePermission(obj).then(response => {
         this.dialogFormVisible = false
         this.$message({
           type: 'success',
@@ -283,7 +283,7 @@ export default {
       })
     },
     appendLevelTwo() {
-      menu.saveLevelOne(this.menu)
+      permission.savePermission(this.menu)
         .then(response => {
           // 1、把文本框关
           this.dialogFormVisible = false

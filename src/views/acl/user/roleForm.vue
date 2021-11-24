@@ -13,7 +13,7 @@
 
 <script>
 
-import userApi from '@/api/acl/user'
+import userRoleApi from '@/api/acl/user-role'
 
 export default {
   data() {
@@ -37,7 +37,7 @@ export default {
             } 
       },
       getById(userId){
-          userApi.getAssign(userId).then(response => {
+          userRoleApi.gainRoleInfoByUserId(userId).then(response => {
               var jsonObj = response.data.assignRoles
               this.checkedRoles = this.getJsonToList(jsonObj,"id")
               this.roles = response.data.allRolesList
@@ -73,7 +73,7 @@ export default {
         this.saveBtnDisabled = true // 防止表单重复提交
         var ids = this.checkedRoles.join(",")
         //修改权限
-        userApi.saveAssign(this.userId, ids).then(response => {
+        userRoleApi.assignRoleToUser(this.userId, ids).then(response => {
             if(response.success){
               this.$message({
                 type:'success',

@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import user from '@/api/acl/user'
+import userApi from '@/api/acl/user'
 
 export default {
   data() {
@@ -114,7 +114,7 @@ export default {
       // 异步获取远程数据（ajax）
       this.page = page
 
-      user.getPageList(this.page, this.limit, this.searchObj).then(
+      userApi.pageUser(this.page, this.limit, this.searchObj).then(
         response => {
           this.list = response.data.items
           this.total = response.data.total
@@ -140,7 +140,7 @@ export default {
         type: 'warning'
       }).then(() => { // promise
         // 点击确定，远程调用ajax
-        return user.removeById(id)
+        return userApi.removeUser(id)
       }).then((response) => {
         this.fetchData(this.page)
         if (response.success) {
@@ -184,7 +184,7 @@ export default {
           idList.push(item.id)
         })
         // 调用api
-        return user.removeRows(idList)
+        return userApi.removeBatchUser(idList)
       }).then((response) => {
         this.fetchData(this.page)
         if (response.success) {

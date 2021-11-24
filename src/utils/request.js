@@ -29,7 +29,7 @@ service.interceptors.response.use(
         /**
          * code为非20000是抛错 可结合自己业务进行修改
          */
-        const res = response.data
+        const res = response
             // debugger
         if (res.code !== 00000) {
             Message({
@@ -39,7 +39,7 @@ service.interceptors.response.use(
             })
             return Promise.reject('error')
         } else {
-            return response.data
+            return response
         }
     },
     error => {

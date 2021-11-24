@@ -68,9 +68,8 @@ export default {
       })
     },
 
-    // 新增讲师
     saveData() {
-      roleApi.save(this.role).then(response => {
+      roleApi.saveRole(this.role).then(response => {
         if (response.success) {
           this.$message({
             type: 'success',
@@ -84,7 +83,7 @@ export default {
     // 根据id更新记录
     updateData() {
       // teacher数据的获取
-      roleApi.updateById(this.role).then(response => {
+      roleApi.updateRole(this.role).then(response => {
         if (response.success) {
           this.$message({
             type: 'success',
@@ -97,7 +96,7 @@ export default {
 
     // 根据id查询记录
     fetchDataById(id) {
-      roleApi.getById(id).then(response => {
+      roleApi.roleDetails(id).then(response => {
         this.role = response.data.item
       })
     }

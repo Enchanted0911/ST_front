@@ -1,5 +1,5 @@
 import { constantRoutes } from '@/router'
-import { getMenu } from '@/api/acl/login'
+import { gainMenuInfo } from '@/api/acl/permission'
 import Layout from '@/layout/Layout'
 
 function filterAsyncRouter(asyncRouterMap) { // 遍历后台传来的路由字符串，转换为组件对象
@@ -42,7 +42,7 @@ const actions = {
   async generateRoutes({ commit }, roles) {
     // 取后台路由
 
-    const asyncRouter = await getMenu()
+    const asyncRouter = await gainMenuInfo()
 
     return new Promise(resolve => {
       const tmp = asyncRouter.data.permissionList

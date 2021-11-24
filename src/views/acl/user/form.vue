@@ -90,7 +90,7 @@ export default {
 
     // 新增用户
     saveData() {
-      userApi.save(this.user).then(response => {
+      userApi.saveAclUser(this.user).then(response => {
         // debugger
         if (response.success) {
           this.$message({
@@ -104,7 +104,7 @@ export default {
 
     // 根据id更新记录
     updateData() {
-      userApi.updateById(this.user).then(response => {
+      userApi.updateUser(this.user).then(response => {
         if (response.success) {
           this.$message({
             type: 'success',
@@ -117,7 +117,7 @@ export default {
 
     // 根据id查询记录
     fetchDataById(id) {
-      userApi.getById(id).then(response => {
+      userApi.userDetails(id).then(response => {
         this.user = response.data.item
       })
     }
