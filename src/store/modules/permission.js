@@ -45,7 +45,7 @@ const actions = {
     const asyncRouter = await gainMenuInfo()
 
     return new Promise(resolve => {
-      const tmp = asyncRouter.data.permissionList
+      const tmp = asyncRouter.data
       const accessedRoutes = filterAsyncRouter(tmp)
 
       commit('SET_ROUTES', accessedRoutes)

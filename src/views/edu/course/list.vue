@@ -103,7 +103,7 @@
 </template>
 <script>
 //引入调用teacher.js文件
-import course from "@/api/edu/course";
+import courseApi from "@/api/edu/course";
 
 export default {
   //写核心代码位置
@@ -127,8 +127,8 @@ export default {
   methods: {
     getList(page = 1) {
       this.page = page;
-      course
-        .getCourseListPage(this.page, this.limit, this.courseQuery)
+      courseApi
+        .pageCourse(this.page, this.limit, this.courseQuery)
         .then((response) => {
           //请求成功
           //response接口返回的数据
@@ -151,7 +151,7 @@ export default {
       }).then(() => {
         //点击确定，执行then方法
         //调用删除的方法
-        course.deleteCourseId(id).then((response) => {
+        courseApi.removeCourse(id).then((response) => {
           //删除成功
           //提示信息
           this.$message({

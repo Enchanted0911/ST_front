@@ -5,16 +5,16 @@
     <!--查询表单-->
     <el-form :inline="true" class="demo-form-inline">
       <el-form-item>
-        <el-input v-model="bannerQuery.title" placeholder="banner标题" />
+        <el-input v-model="bannerPage.title" placeholder="banner标题" />
       </el-form-item>
 
       <el-form-item>
-        <el-input v-model="bannerQuery.linkUrl" placeholder="banner链接" />
+        <el-input v-model="bannerPage.linkUrl" placeholder="banner链接" />
       </el-form-item>
 
       <el-form-item label="添加时间">
         <el-date-picker
-          v-model="bannerQuery.start"
+          v-model="bannerPage.start"
           type="datetime"
           placeholder="选择开始时间"
           value-format="yyyy-MM-dd HH:mm:ss"
@@ -23,7 +23,7 @@
       </el-form-item>
       <el-form-item>
         <el-date-picker
-          v-model="bannerQuery.end"
+          v-model="bannerPage.end"
           type="datetime"
           placeholder="选择截止时间"
           value-format="yyyy-MM-dd HH:mm:ss"
@@ -49,7 +49,7 @@
         align="center"
       >
         <template slot-scope="scope">
-          {{ (page - 1) * pageSize + scope.$index + 1 }}
+          {{ (bannerPage.page - 1) * bannerPage.pageSize + scope.$index + 1 }}
         </template>
       </el-table-column>
 
@@ -82,8 +82,8 @@
 
     <!-- 分页 -->
     <el-pagination
-      :current-page="page"
-      :page-size="pageSize"
+      :current-page="bannerPage.page"
+      :page-size="bannerPage.pageSize"
       :total="total"
       style="padding: 30px 0; text-align: center;"
       layout="total, prev, pager, next, jumper"
@@ -99,10 +99,15 @@ export default {
   data() { // 定义变量和初始值
     return {
       items: null, // 查询之后接口返回集合
-      page: 1, // 当前页
-      pageSize: 10, // 每页记录数
       total: 0, // 总记录数
-      bannerQuery: {} // 条件封装对象
+      bannerPage: {
+        page: 1,
+        pageSize: 10,
+        linkUrl: '',
+        title: '',
+        start: '',
+        end: ''
+      }
     }
   },
   created() { // 页面渲染之前执行，一般调用methods定义的方法
@@ -120,18 +125,20 @@ export default {
       viewer.show()
     },
     getList(page = 1) {
-      this.page = page
-      banner.getBannerListPage(this.page, this.pageSize, this.bannerQuery)
+      this.bannerPage.page = page
+      banner.getBannerListPage(bannerPage)
         .then(response => {
           // 请求成功
           // response接口返回的数据
-          this.items = response.data.items
+          this.items = response.data.rows
           this.total = response.data.total
         })
     },
     resetData() { // 清空的方法
       // 表单输入项数据清空
-      this.bannerQuery = {}
+      this.bannerPage = {}
+      this.bannerPage.page = 1
+      this.bannerPage.pageSize = 10
       this.getList()
     },
     removeDataById(id) {

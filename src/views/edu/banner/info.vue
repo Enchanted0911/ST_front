@@ -109,7 +109,7 @@ export default {
     // 根据banner id查询的方法
     getInfo(id) {
       bannerApi.getBannerInfo(id).then((response) => {
-        this.banner = response.data.banner
+        this.banner = response.data
       })
     },
     saveOrUpdate() {

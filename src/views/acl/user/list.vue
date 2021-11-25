@@ -4,7 +4,7 @@
     <!--查询表单-->
     <el-form :inline="true" class="demo-form-inline">
       <el-form-item>
-         <el-input v-model="searchObj.username" placeholder="用户名"/>
+         <el-input v-model="userPage.username" placeholder="用户名"/>
       </el-form-item>
 
       <el-button type="primary" icon="el-icon-search" @click="fetchData()">查询</el-button>
@@ -35,7 +35,7 @@
         width="70"
         align="center">
         <template slot-scope="scope">
-          {{ (page - 1) * limit + scope.$index + 1 }}
+          {{ (userPage.page - 1) * userPage.pageSize + scope.$index + 1 }}
         </template>
       </el-table-column>
 
@@ -60,9 +60,9 @@
 
     <!-- 分页组件 -->
     <el-pagination
-      :current-page="page"
+      :current-page="userPage.page"
       :total="total"
-      :page-size="limit"
+      :page-size="userPage.pageSize"
       :page-sizes="[5, 10, 20, 30, 40, 50, 100]"
       style="padding: 30px 0; text-align: center;"
       layout="sizes, prev, pager, next, jumper, ->, total, slot"
@@ -81,10 +81,12 @@ export default {
       listLoading: true, // 数据是否正在加载
       list: null, // 讲师列表
       total: 0, // 数据库中的总记录数
-      page: 1, // 默认页码
-      limit: 10, // 每页记录数
-      searchObj: {}, // 查询表单对象
-      multipleSelection: [] // 批量选择中选择的记录列表
+      multipleSelection: [], // 批量选择中选择的记录列表
+      userPage: {
+        page: 1,
+        pageSize: 10,
+        username: null
+      }
     }
   },
 
@@ -101,7 +103,7 @@ export default {
 
     // 当页码发生改变的时候
     changeSize(size) {
-      this.limit = size
+      userPage.pageSize = size
       this.fetchData(1)
     },
 
@@ -112,11 +114,11 @@ export default {
     // 加载讲师列表数据
     fetchData(page = 1) {
       // 异步获取远程数据（ajax）
-      this.page = page
+      this.userPage.page = page
 
-      userApi.pageUser(this.page, this.limit, this.searchObj).then(
+      userApi.pageUser(userPage).then(
         response => {
-          this.list = response.data.items
+          this.list = response.data.rows
           this.total = response.data.total
 
           // 数据加载并绑定成功
@@ -127,7 +129,7 @@ export default {
 
     // 重置查询表单
     resetData() {
-      this.searchObj = {}
+      this.userPage.username = {}
       this.fetchData()
     },
 
@@ -142,7 +144,7 @@ export default {
         // 点击确定，远程调用ajax
         return userApi.removeUser(id)
       }).then((response) => {
-        this.fetchData(this.page)
+        this.fetchData(this.userPage.page)
         if (response.success) {
           this.$message({
             type: 'success',
@@ -186,7 +188,7 @@ export default {
         // 调用api
         return userApi.removeBatchUser(idList)
       }).then((response) => {
-        this.fetchData(this.page)
+        this.fetchData(this.userPage.page)
         if (response.success) {
           this.$message({
             type: 'success',

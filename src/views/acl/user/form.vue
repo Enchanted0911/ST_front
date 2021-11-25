@@ -92,10 +92,10 @@ export default {
     saveData() {
       userApi.saveAclUser(this.user).then(response => {
         // debugger
-        if (response.success) {
+        if (response.code === "20000") {
           this.$message({
             type: 'success',
-            message: response.message
+            message: response.msg
           })
           this.$router.push({ path: '/acl/user/list' })
         }
@@ -105,10 +105,10 @@ export default {
     // 根据id更新记录
     updateData() {
       userApi.updateUser(this.user).then(response => {
-        if (response.success) {
+        if (response.code === "20000") {
           this.$message({
             type: 'success',
-            message: response.message
+            message: response.msg
           })
           this.$router.push({ path: '/acl/user/list' })
         }
@@ -118,7 +118,7 @@ export default {
     // 根据id查询记录
     fetchDataById(id) {
       userApi.userDetails(id).then(response => {
-        this.user = response.data.item
+        this.user = response.data
       })
     }
 

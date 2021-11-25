@@ -109,8 +109,8 @@
   </div>
 </template>
 <script>
-import course from '@/api/edu/course'
-import subject from '@/api/edu/subject'
+import courseApi from '@/api/edu/course'
+import subjectApi from '@/api/edu/subject'
 import Tinymce from '@/components/Tinymce'
 export default {
   components: { Tinymce },
@@ -150,7 +150,7 @@ export default {
   methods: {
     // 根据课程id查询
     getInfo() {
-      course.getCourseInfoId(this.courseId).then((response) => {
+      courseApi.gainCourseBaseInfo(this.courseId).then((response) => {
         // 在courseInfo课程基本信息，包含 一级分类id 和 二级分类id
         this.courseInfo = response.data.courseInfoVo
         // 1 查询所有的分类，包含一级和二级
@@ -207,19 +207,19 @@ export default {
     },
     // 查询所有的一级分类
     getOneSubject() {
-      subject.getSubjectList().then((response) => {
+      subjectApi.getSubjectList().then((response) => {
         this.subjectOneList = response.data.list
       })
     },
     // 查询所有的讲师
     getListTeacher() {
-      course.getListTeacher().then((response) => {
+      courseApi.getListTeacher().then((response) => {
         this.teacherList = response.data.items
       })
     },
     // 添加课程
     addCourse() {
-      course.addCourseInfo(this.courseInfo).then((response) => {
+      courseApi.saveCourseBaseInfo(this.courseInfo).then((response) => {
         // 提示
         this.$message({
           type: 'success',
@@ -233,7 +233,7 @@ export default {
     },
     // 修改课程
     updateCourse() {
-      course.updateCourseInfo(this.courseInfo).then((response) => {
+      courseApi.updateCourseBaseInfo(this.courseInfo).then((response) => {
         // 提示
         this.$message({
           type: 'success',

@@ -22,8 +22,11 @@ export default {
         checkedRoles: [], //已选中
         roles: [], //所有的
         isIndeterminate: true,
-        userId:'',
-        saveBtnDisabled: false // 保存按钮是否禁用,
+        saveBtnDisabled: false, // 保存按钮是否禁用
+        userRole: {
+          userId: '',
+          roleIdList: null
+        }
       };
     },
     created () {
@@ -32,15 +35,15 @@ export default {
     methods: {
       init(){
           if (this.$route.params && this.$route.params.id) {
-                this.userId = this.$route.params.id
-                this.getById(this.userId)
+                this.userRole.userId = this.$route.params.id
+                this.getById(this.userRole.userId)
             } 
       },
       getById(userId){
           userRoleApi.gainRoleInfoByUserId(userId).then(response => {
               var jsonObj = response.data.assignRoles
               this.checkedRoles = this.getJsonToList(jsonObj,"id")
-              this.roles = response.data.allRolesList
+              this.roles = response.data
               if (this.checkedRoles.length === this.roles.length) {
                 this.isIndeterminate = false;
                 this.checkAll = true;
@@ -71,10 +74,10 @@ export default {
       },
       update(){
         this.saveBtnDisabled = true // 防止表单重复提交
-        var ids = this.checkedRoles.join(",")
+        this.userRole.roleIdList = this.checkedRoles.join(",")
         //修改权限
-        userRoleApi.assignRoleToUser(this.userId, ids).then(response => {
-            if(response.success){
+        userRoleApi.assignRoleToUser(userRole).then(response => {
+            if(response.code === "20000"){
               this.$message({
                 type:'success',
                 message:'保存成功'

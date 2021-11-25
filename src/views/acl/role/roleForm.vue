@@ -24,8 +24,10 @@ export default {
         children: 'children',
         label: 'name'
       },
-      roleId:''
-
+      rolePermission:{
+        roleId: '',
+        idList: null
+      }
     };
   },
   // 监听器
@@ -42,13 +44,13 @@ export default {
 
     init(){
       if (this.$route.params && this.$route.params.id) {
-          this.roleId = this.$route.params.id
-          this.fetchDataById(this.roleId)
+          this.rolePermission.roleId = this.$route.params.id
+          this.fetchDataById(this.rolePermission.roleId)
       } 
     },
     fetchDataById(roleId){
-        rolePermission.toAssign(roleId).then(response => {
-            this.data = response.data.children
+        rolePermission.selectRolePermissionRelationShip(roleId).then(response => {
+            this.data = response.data
             var jsonList = JSON.parse(JSON.stringify(this.data))
             var list = []
             this.getJsonToList(list, jsonList[0]['children'])
@@ -74,12 +76,12 @@ export default {
 
     save(){
       this.saveBtnDisabled = true
-      var ids = this.$refs.tree.getCheckedKeys().join(",").concat(",", this.$refs.tree.getHalfCheckedKeys().join(",")) 
+      this.rolePermission.idList = this.$refs.tree.getCheckedKeys().join(",").concat(",", this.$refs.tree.getHalfCheckedKeys().join(",")) 
       //vue elementUI tree树形控件获取父节点ID的实例
       //node_modules\element-ui\lib\element-ui.common.js
       //25348行修改源码
-      rolePermission.doAssign(this.roleId, ids).then(response => {
-          if(response.success){
+      rolePermission.saveRolePermissionRelationShip(this.rolePermission).then(response => {
+          if(response.code === "20000"){
               this.$message({
                 type:'success',
                 message:'保存成功'

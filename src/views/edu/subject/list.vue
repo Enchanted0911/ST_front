@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import subject from '@/api/edu/subject'
+import subjectApi from '@/api/edu/subject'
 export default {
 
   data() {
@@ -39,7 +39,7 @@ export default {
 
   methods: {
     getAllSubjectList() {
-        subject.getSubjectList()
+        subjectApi.gainSubject()
             .then(response => {
                 this.data2 = response.data.list
             })

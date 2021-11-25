@@ -3,13 +3,13 @@ import request from '@/utils/request'
 const api_name = '/rabbit/acl/acl-role-permission'
 
 export default {
-    toAssign(roleId) {
+    selectRolePermissionRelationShip(roleId) {
         return request({
             url: `${api_name}/${roleId}`,
             method: 'get'
         })
     },
-    doAssign(rolePermission) {
+    saveRolePermissionRelationShip(rolePermission) {
         return request({
             url: `${api_name}`,
             method: "post",

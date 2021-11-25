@@ -3,7 +3,7 @@ import request from '@/utils/request'
 const api_name = '/rabbit/back/course-subsection'
 
 export default {
-    gainCourseSubsection(videoId) {
+    gainCourseSubsection(id) {
         return request({
             url: `${api_name}/${id}`,
             method: 'get'

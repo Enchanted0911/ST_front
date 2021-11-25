@@ -94,7 +94,7 @@
 </template>
 <script>
 // 引入调用teacher.js文件
-import teacher from '@/api/edu/teacher'
+import teacherApi from '@/api/edu/teacher'
 
 export default {
   // 写核心代码位置
@@ -117,7 +117,7 @@ export default {
     // 讲师列表的方法
     getList(page = 1) {
       this.page = page
-      teacher.getTeacherListPage(this.page, this.limit, this.teacherQuery)
+      teacherApi.pageTeacher(this.page, this.limit, this.teacherQuery)
         .then(response => {
           // 请求成功
           // response接口返回的数据
@@ -140,7 +140,7 @@ export default {
         type: 'warning'
       }).then(() => { // 点击确定，执行then方法
         // 调用删除的方法
-        teacher.deleteTeacherId(id)
+        teacherApi.removeTeacher(id)
           .then(response => { // 删除成功
             // 提示信息
             this.$message({

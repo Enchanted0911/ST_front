@@ -18,7 +18,7 @@
           :on-error="fileUploadError"
           :disabled="importBtnDisabled"
           :limit="1"
-          :action="BASE_API+'/eduService/subject/addSubject'"
+          :action="BASE_API+'/rabbit/back/subject'"
           name="file"
           accept=".xlsx">
           <el-button slot="trigger" size="small" type="primary">选取文件</el-button>

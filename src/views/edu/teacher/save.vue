@@ -129,7 +129,7 @@ export default {
     },
     // 根据讲师id查询的方法
     getInfo(id) {
-      teacherApi.getTeacherInfo(id).then((response) => {
+      teacherApi.teacherDetails(id).then((response) => {
         this.teacher = response.data.teacher
       })
     },
@@ -146,7 +146,7 @@ export default {
     },
     // 修改讲师的方法
     updateTeacher() {
-      teacherApi.updateTeacherInfo(this.teacher).then((response) => {
+      teacherApi.updateTeacher(this.teacher).then((response) => {
         // 提示信息
         this.$message({
           type: 'success',
@@ -158,7 +158,7 @@ export default {
     },
     // 添加讲师的方法
     saveTeacher() {
-      teacherApi.addTeacher(this.teacher).then((response) => {
+      teacherApi.saveTeacher(this.teacher).then((response) => {
         // 添加成功
         // 提示信息
         this.$message({

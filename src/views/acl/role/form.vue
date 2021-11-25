@@ -70,10 +70,10 @@ export default {
 
     saveData() {
       roleApi.saveRole(this.role).then(response => {
-        if (response.success) {
+        if (response.code === "20000") {
           this.$message({
             type: 'success',
-            message: response.message
+            message: response.msg
           })
           this.$router.push({ path: '/acl/role/list' })
         }
@@ -84,10 +84,10 @@ export default {
     updateData() {
       // teacher数据的获取
       roleApi.updateRole(this.role).then(response => {
-        if (response.success) {
+        if (response.code === "20000") {
           this.$message({
             type: 'success',
-            message: response.message
+            message: response.msg
           })
           this.$router.push({ path: '/acl/role/list' })
         }
@@ -97,7 +97,7 @@ export default {
     // 根据id查询记录
     fetchDataById(id) {
       roleApi.roleDetails(id).then(response => {
-        this.role = response.data.item
+        this.role = response.data
       })
     }
 

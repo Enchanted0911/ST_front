@@ -137,8 +137,9 @@
   </div>
 </template>
 <script>
-import chapter from "@/api/edu/chapter";
-import video from "@/api/edu/video";
+import chapterApi from "@/api/edu/chapter";
+import subsectionApi from "@/api/edu/subsection";
+import courseApi from "@/api/edu/course";
 
 export default {
   data() {
@@ -151,7 +152,7 @@ export default {
         title: "",
         sort: 0,
       },
-      video: {
+      subsection: {
         title: "",
         sort: 0,
         free: 0,
@@ -176,7 +177,7 @@ export default {
     //点击确定调用的方法
     handleVodRemove() {
       //调用接口的删除视频的方法
-      video.deleteAlyVod(this.video.videoSourceId).then((response) => {
+      subsectionApi.deleteAlyVod(this.subsection.videoSourceId).then((response) => {
         //提示信息
         this.$message({
           type: "success",
@@ -186,9 +187,9 @@ export default {
         this.fileList = [];
         //把video视频id和视频名称值清空
         //上传视频id赋值
-        this.video.videoSourceId = "";
+        this.subsection.videoSourceId = "";
         //上传视频名称赋值
-        this.video.videoOriginalName = "";
+        this.subsection.videoOriginalName = "";
       });
     },
     //点击×调用这个方法
@@ -198,9 +199,9 @@ export default {
     //上传视频成功调用的方法
     handleVodUploadSuccess(response, file, fileList) {
       //上传视频id赋值
-      this.video.videoSourceId = response.data.videoId;
+      this.subsection.videoSourceId = response.data.videoId;
       //上传视频名称赋值
-      this.video.videoOriginalName = file.name;
+      this.subsection.videoOriginalName = file.name;
     },
     handleUploadExceed() {
       this.$message.warning("想要重新上传视频，请先删除已上传的视频");
@@ -215,7 +216,7 @@ export default {
       }).then(() => {
         //点击确定，执行then方法
         //调用删除的方法
-        video.deleteVideo(id).then((response) => {
+        subsectionApi.removeCourseSubsection(id).then((response) => {
           //删除成功
           //提示信息
           this.$message({
@@ -229,18 +230,18 @@ export default {
     },
     //添加小节弹框的方法
     openVideo(chapterId) {
-      this.video = {};
+      this.subsection = {};
       this.fileList = [];
       //弹框
       this.dialogVideoFormVisible = true;
       //设置章节id
-      this.video.chapterId = chapterId;
+      this.subsection.chapterId = chapterId;
     },
     //添加小节
     addVideo() {
       //设置课程id
-      this.video.courseId = this.courseId;
-      video.addVideo(this.video).then((response) => {
+      this.subsection.courseId = this.courseId;
+      subsectionApi.saveCourseSubsection(this.subsection).then((response) => {
         //关闭弹框
         this.dialogVideoFormVisible = false;
         //提示
@@ -257,10 +258,10 @@ export default {
       //弹框
       this.dialogVideoFormVisible = true;
       //调用接口
-      video.getVideo(videoId).then((response) => {
-        this.video = response.data.video;
-        if (this.video.videoOriginalName != "" && this.video.videoOriginalName != null) {
-          this.fileList = [{ name: this.video.videoOriginalName, url: "" }];
+      subsection.gainCourseSubsection(videoId).then((response) => {
+        this.subsection = response.data;
+        if (this.subsection.videoOriginalName != "" && this.subsection.videoOriginalName != null) {
+          this.fileList = [{ name: this.subsection.videoOriginalName, url: "" }];
         } else {
           this.fileList = [];
         }
@@ -269,8 +270,8 @@ export default {
     //修改小节
     updateVideo() {
       //设置课程id
-      this.video.courseId = this.courseId;
-      video.updateVideo(this.video).then((response) => {
+      this.subsection.courseId = this.courseId;
+      subsectionApi.updateCourseSubsection(this.video).then((response) => {
         //关闭弹框
         this.dialogVideoFormVisible = false;
         //提示
@@ -283,7 +284,7 @@ export default {
       });
     },
     saveOrUpdateVideo() {
-      if (!this.video.id) {
+      if (!this.subsection.id) {
         this.addVideo();
       } else {
         this.updateVideo();
@@ -300,7 +301,7 @@ export default {
       }).then(() => {
         //点击确定，执行then方法
         //调用删除的方法
-        chapter.deleteChapter(chapterId).then((response) => {
+        chapterApi.deleteChapter(chapterId).then((response) => {
           //删除成功
           //提示信息
           this.$message({
@@ -317,8 +318,8 @@ export default {
       //弹框
       this.dialogChapterFormVisible = true;
       //调用接口
-      chapter.getChapter(chapterId).then((response) => {
-        this.chapter = response.data.chapter;
+      chapterApi.chapterDetails(chapterId).then((response) => {
+        this.chapter = response.data;
       });
     },
     //弹出添加章节页面
@@ -332,7 +333,7 @@ export default {
     addChapter() {
       //设置课程id到chapter对象里面
       this.chapter.courseId = this.courseId;
-      chapter.addChapter(this.chapter).then((response) => {
+      chapterApi.saveChapter(this.chapter).then((response) => {
         //关闭弹框
         this.dialogChapterFormVisible = false;
         //提示
@@ -346,7 +347,7 @@ export default {
     },
     //修改章节的方法
     updateChapter() {
-      chapter.updateChapter(this.chapter).then((response) => {
+      chapterApi.updateChapter(this.chapter).then((response) => {
         //关闭弹框
         this.dialogChapterFormVisible = false;
         //提示
@@ -367,7 +368,7 @@ export default {
     },
     //根据课程id查询章节和小节
     getChapterVideo() {
-      chapter.getAllChapterVideo(this.courseId).then((response) => {
+      courseApi.gainCourseOutline(this.courseId).then((response) => {
         this.chapterVideoList = response.data.allChapterVideo;
       });
     },

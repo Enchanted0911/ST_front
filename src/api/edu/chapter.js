@@ -19,7 +19,6 @@ export default {
             data: chapter
         })
     },
-    //根据id查询章节
     deleteChapter(chapterId) {
         return request({
             url: `${api_name}/${chapterId}`,

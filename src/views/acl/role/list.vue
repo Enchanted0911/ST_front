@@ -4,7 +4,7 @@
     <!--查询表单-->
     <el-form :inline="true" class="demo-form-inline">
       <el-form-item>
-        <el-input v-model="searchObj.roleName" placeholder="角色名称"/>
+        <el-input v-model="pageRole.roleName" placeholder="角色名称"/>
       </el-form-item>
 
       <el-button type="primary" icon="el-icon-search" @click="fetchData()">查询</el-button>
@@ -35,7 +35,7 @@
         width="70"
         align="center">
         <template slot-scope="scope">
-          {{ (page - 1) * limit + scope.$index + 1 }}
+          {{ (pageRole.page - 1) * pageRole.pageSize + scope.$index + 1 }}
         </template>
       </el-table-column>
 
@@ -57,9 +57,9 @@
 
     <!-- 分页组件 -->
     <el-pagination
-      :current-page="page"
+      :current-page="pageRole.page"
       :total="total"
-      :page-size="limit"
+      :page-size="pageRole.pageSize"
       :page-sizes="[5, 10, 20, 30, 40, 50, 100]"
       style="padding: 30px 0; text-align: center;"
       layout="sizes, prev, pager, next, jumper, ->, total, slot"
@@ -78,10 +78,13 @@ export default {
       listLoading: true, // 数据是否正在加载
       list: null, // 讲师列表
       total: 0, // 数据库中的总记录数
-      page: 1, // 默认页码
-      limit: 10, // 每页记录数
       searchObj: {}, // 查询表单对象
-      multipleSelection: [] // 批量选择中选择的记录列表
+      multipleSelection: [], // 批量选择中选择的记录列表
+      pageRole: {
+        page: 1,
+        pageSize: 10,
+        roleName: null
+      }
     }
   },
 
@@ -93,7 +96,6 @@ export default {
 
   // 生命周期函数：内存准备完毕，页面渲染成功
   mounted() {
-    console.log('list mounted......')
   },
 
   methods: {
@@ -101,7 +103,7 @@ export default {
     // 当页码发生改变的时候
     changeSize(size) {
       console.log(size)
-      this.limit = size
+      this.pageRole.pageSize = size
       this.fetchData(1)
     },
 
@@ -111,13 +113,12 @@ export default {
 
     // 加载讲师列表数据
     fetchData(page = 1) {
-      console.log('翻页。。。' + page)
       // 异步获取远程数据（ajax）
-      this.page = page
+      this.pageRole.page = page
 
-      roleApi.pageRole(this.page, this.limit, this.searchObj).then(
+      roleApi.pageRole(this.pageRole).then(
         response => {
-          this.list = response.data.items
+          this.list = response.data.rows
           this.total = response.data.total
 
           // 数据加载并绑定成功
@@ -143,7 +144,7 @@ export default {
         // 点击确定，远程调用ajax
         return roleApi.removeRole(id)
       }).then((response) => {
-        this.fetchData(this.page)
+        this.fetchData(this.pageRole.page)
         if (response.success) {
           this.$message({
             type: 'success',
@@ -192,7 +193,7 @@ export default {
         // 调用api
         return roleApi.removeBatchRole(idList)
       }).then((response) => {
-        this.fetchData(this.page)
+        this.fetchData(this.pageRole.page)
         if (response.success) {
           this.$message({
             type: 'success',

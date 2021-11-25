@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import course from '@/api/edu/course'
+import courseApi from '@/api/edu/course'
 export default {
   data() {
     return {
@@ -52,7 +52,7 @@ export default {
 
     //根据课程id查询
     getCoursePublishId() {
-      course.getPublishCourseInfo(this.courseId)
+      courseApi.gainCoursePublishInfo(this.courseId)
         .then(response => {
           this.coursePublish = response.data.publishCourse
         })
