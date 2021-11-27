@@ -22,7 +22,7 @@
   </div>
 </template>
 <script>
-import statistics from '@/api/statistics'
+import statistics from '@/api/edu/statistics'
 export default {
   data() {
     return {
@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     create() {
-      statistics.createStaData(this.day)
+      statistics.registerCount(this.day)
         .then(response => {
           // 提示信息
           this.$message({

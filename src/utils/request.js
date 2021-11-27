@@ -13,7 +13,7 @@ const service = axios.create({
 service.interceptors.request.use(
     config => {
         if (store.getters.token) {
-            config.headers['token'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
+            config.headers['Authorization'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
         }
         return config
     },
@@ -29,17 +29,17 @@ service.interceptors.response.use(
         /**
          * code为非20000是抛错 可结合自己业务进行修改
          */
-        const res = response
+        const res = response.data
             // debugger
-        if (res.code !== 00000) {
+        if (res.code !== "20000") {
             Message({
-                message: res.message,
+                message: res.msg,
                 type: 'error',
                 duration: 5 * 1000
             })
             return Promise.reject('error')
         } else {
-            return response
+            return response.data
         }
     },
     error => {

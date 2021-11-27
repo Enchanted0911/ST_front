@@ -5,11 +5,11 @@
     <!--查询表单-->
     <el-form :inline="true" class="demo-form-inline">
       <el-form-item>
-        <el-input v-model="teacherQuery.name" placeholder="讲师名" />
+        <el-input v-model="teacherPage.name" placeholder="讲师名" />
       </el-form-item>
 
       <el-form-item>
-        <el-select v-model="teacherQuery.level" clearable placeholder="讲师头衔">
+        <el-select v-model="teacherPage.level" clearable placeholder="讲师头衔">
           <el-option :value="1" label="高级讲师" />
           <el-option :value="2" label="首席讲师" />
         </el-select>
@@ -17,7 +17,7 @@
 
       <el-form-item label="添加时间">
         <el-date-picker
-          v-model="teacherQuery.begin"
+          v-model="teacherPage.begin"
           type="datetime"
           placeholder="选择开始时间"
           value-format="yyyy-MM-dd HH:mm:ss"
@@ -26,7 +26,7 @@
       </el-form-item>
       <el-form-item>
         <el-date-picker
-          v-model="teacherQuery.end"
+          v-model="teacherPage.end"
           type="datetime"
           placeholder="选择截止时间"
           value-format="yyyy-MM-dd HH:mm:ss"
@@ -52,7 +52,7 @@
         align="center"
       >
         <template slot-scope="scope">
-          {{ (page - 1) * limit + scope.$index + 1 }}
+          {{ (teacherPage.page - 1) * teacherPage.pageSize + scope.$index + 1 }}
         </template>
       </el-table-column>
 
@@ -82,8 +82,8 @@
 
     <!-- 分页 -->
     <el-pagination
-      :current-page="page"
-      :page-size="limit"
+      :current-page="teacherPage.page"
+      :page-size="teacherPage.pageSize"
       :total="total"
       style="padding: 30px 0; text-align: center;"
       layout="total, prev, pager, next, jumper"
@@ -103,10 +103,15 @@ export default {
   data() { // 定义变量和初始值
     return {
       list: null, // 查询之后接口返回集合
-      page: 1, // 当前页
-      limit: 10, // 每页记录数
       total: 0, // 总记录数
-      teacherQuery: {} // 条件封装对象
+      teacherPage: {
+        page: 1,
+        pageSize: 10,
+        name: '',
+        level: 0,
+        begin: '',
+        end: ''
+      }
     }
   },
   created() { // 页面渲染之前执行，一般调用methods定义的方法
@@ -117,12 +122,12 @@ export default {
     // 讲师列表的方法
     getList(page = 1) {
       this.page = page
-      teacherApi.pageTeacher(this.page, this.limit, this.teacherQuery)
+      teacherApi.pageTeacher(teacherPage)
         .then(response => {
           // 请求成功
           // response接口返回的数据
           // console.log(response)
-          this.list = response.data.list
+          this.list = response.data.rows
           this.total = response.data.total
         })
     },

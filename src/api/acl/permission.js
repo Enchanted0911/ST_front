@@ -9,12 +9,6 @@ export default {
             method: 'get'
         })
     },
-    gainMenuInfo() {
-        return request({
-            url: `${api_name}/menu`,
-            method: "get",
-        })
-    },
     deletePermission(id) {
         return request({
             url: `${api_name}/${id}`,
@@ -41,4 +35,11 @@ export default {
             method: "get",
         })
     }
+}
+
+export function gainMenuInfo() {
+    return request({
+        url: `${api_name}/menu`,
+        method: "get",
+    })
 }

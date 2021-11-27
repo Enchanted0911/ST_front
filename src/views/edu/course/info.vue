@@ -81,7 +81,7 @@
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload"
-          :action="BASE_API + '/eduOss/fileOss/courseCover'"
+          :action="BASE_API + '/rabbit/back/oss/course-cover'"
           class="avatar-uploader"
         >
           <img :src="courseInfo.cover">
@@ -111,6 +111,7 @@
 <script>
 import courseApi from '@/api/edu/course'
 import subjectApi from '@/api/edu/subject'
+import teacherApi from '@/api/edu/teacher'
 import Tinymce from '@/components/Tinymce'
 export default {
   components: { Tinymce },
@@ -154,7 +155,7 @@ export default {
         // 在courseInfo课程基本信息，包含 一级分类id 和 二级分类id
         this.courseInfo = response.data.courseInfoVo
         // 1 查询所有的分类，包含一级和二级
-        subject.getSubjectList().then((response) => {
+        subjectApi.gainSubject().then((response) => {
           // 2 获取所有一级分类
           this.subjectOneList = response.data.list
           // 3 把所有的一级分类数组进行遍历，
@@ -207,13 +208,13 @@ export default {
     },
     // 查询所有的一级分类
     getOneSubject() {
-      subjectApi.getSubjectList().then((response) => {
+      subjectApi.gainSubject().then((response) => {
         this.subjectOneList = response.data.list
       })
     },
     // 查询所有的讲师
     getListTeacher() {
-      courseApi.getListTeacher().then((response) => {
+      teacherApi.listTeacher().then((response) => {
         this.teacherList = response.data.items
       })
     },

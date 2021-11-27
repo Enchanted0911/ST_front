@@ -5,12 +5,12 @@
     <!--查询表单-->
     <el-form :inline="true" class="demo-form-inline">
       <el-form-item>
-        <el-input v-model="courseQuery.title" placeholder="课程名称" />
+        <el-input v-model="coursePage.title" placeholder="课程名称" />
       </el-form-item>
 
       <el-form-item>
         <el-select
-          v-model="courseQuery.status"
+          v-model="coursePage.status"
           clearable
           placeholder="课程状态"
         >
@@ -29,7 +29,7 @@
     <el-table :data="list" border fit highlight-current-row>
       <el-table-column label="序号" width="70" align="center">
         <template slot-scope="scope">
-          {{ (page - 1) * limit + scope.$index + 1 }}
+          {{ (courpage.page - 1) * coursePage.pageSize + scope.$index + 1 }}
         </template>
       </el-table-column>
 
@@ -92,8 +92,8 @@
 
     <!-- 分页 -->
     <el-pagination
-      :current-page="page"
-      :page-size="limit"
+      :current-page="coursePage.page"
+      :page-size="coursePage.pageSize"
       :total="total"
       style="padding: 30px 0; text-align: center"
       layout="total, prev, pager, next, jumper"
@@ -113,10 +113,13 @@ export default {
     //定义变量和初始值
     return {
       list: null, //查询之后接口返回集合
-      page: 1, //当前页
-      limit: 10, //每页记录数
       total: 0, //总记录数
-      courseQuery: {}, //条件封装对象
+      coursePage: {
+        page: 1,
+        pageSize: 10,
+        title: '',
+        status: ''
+      }
     };
   },
   created() {
@@ -126,13 +129,13 @@ export default {
   },
   methods: {
     getList(page = 1) {
-      this.page = page;
+      this.coursePage.page = page;
       courseApi
-        .pageCourse(this.page, this.limit, this.courseQuery)
+        .pageCourse(this.coursePage)
         .then((response) => {
           //请求成功
           //response接口返回的数据
-          this.list = response.data.list;
+          this.list = response.data.rows;
           this.total = response.data.total;
         });
     },

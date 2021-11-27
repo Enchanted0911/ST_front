@@ -50,7 +50,7 @@
           :key="imagecropperKey"
           :width="300"
           :height="300"
-          :url="BASE_API + '/eduOss/fileOss/teachAvatar'"
+          :url="BASE_API + '/rabbit/back/oss/teacher-avatar'"
           field="file"
           @close="close"
           @crop-upload-success="cropSuccess"
@@ -130,7 +130,7 @@ export default {
     // 根据讲师id查询的方法
     getInfo(id) {
       teacherApi.teacherDetails(id).then((response) => {
-        this.teacher = response.data.teacher
+        this.teacher = response.data
       })
     },
     saveOrUpdate() {

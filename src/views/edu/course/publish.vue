@@ -54,7 +54,7 @@ export default {
     getCoursePublishId() {
       courseApi.gainCoursePublishInfo(this.courseId)
         .then(response => {
-          this.coursePublish = response.data.publishCourse
+          this.coursePublish = response.data
         })
     },
     previous() {
@@ -72,7 +72,6 @@ export default {
           //跳转课程列表页面
           this.$router.push({ path: '/edu/course/list' })
         })
-      
     }
   }
 }
