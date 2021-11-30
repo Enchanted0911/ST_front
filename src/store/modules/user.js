@@ -16,7 +16,7 @@ const user = {
             state.token = token
         },
         SET_NAME: (state, name) => {
-            state.name = name
+            state.username = name
         },
         SET_AVATAR: (state, avatar) => {
             state.avatar = avatar
@@ -63,7 +63,7 @@ const user = {
                         buttonAuthList.push(button)
                     })
 
-                    commit('SET_NAME', data.name)
+                    commit('SET_NAME', data.username)
                     commit('SET_AVATAR', data.avatar)
                     commit('SET_BUTTONS', buttonAuthList)
                     resolve(response)
