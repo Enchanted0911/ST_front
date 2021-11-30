@@ -22,13 +22,13 @@ export default {
         return request({
             url: `${api_name}/page`,
             method: 'get',
-            data: userPage
+            params: userPage
         })
     },
 
     updateUser(user) {
         return request({
-            url: `${api_name}/update`,
+            url: `${api_name}`,
             method: 'put',
             data: user
         })
@@ -42,7 +42,7 @@ export default {
     removeBatchUser(userIdList) {
         return request({
             url: `${api_name}`,
-            method: 'post',
+            method: 'delete',
             data: userIdList
         })
     }

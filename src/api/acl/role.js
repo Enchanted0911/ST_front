@@ -8,7 +8,7 @@ export default {
         return request({
             url: `${api_name}/page`,
             method: 'get',
-            data: rolePage // url查询字符串或表单键值对
+            params: rolePage // url查询字符串或表单键值对
         })
     },
     roleDetails(id) {

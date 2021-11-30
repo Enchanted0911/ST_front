@@ -1,8 +1,14 @@
 <template>
   <div class="app-container">
     <el-form ref="role" :model="role" :rules="validateRules" label-width="120px">
-      <el-form-item label="角色名称" prop="roleName">
-        <el-input v-model="role.roleName"/>
+      <el-form-item label="角色名称" prop="name">
+        <el-input v-model="role.name"/>
+      </el-form-item>
+      <el-form-item label="角色编码" prop="code">
+        <el-input v-model="role.code"/>
+      </el-form-item>
+      <el-form-item label="角色备注" prop="remark">
+        <el-input v-model="role.remark"/>
       </el-form-item>
     <el-form-item>
         <el-button :disabled="saveBtnDisabled" type="primary" @click="saveOrUpdate">保存</el-button>
@@ -25,7 +31,7 @@ export default {
       role: defaultForm,
       saveBtnDisabled: false, // 保存按钮是否禁用,
       validateRules: {
-        roleName: [{ required: true, trigger: 'blur', message: '角色名必须输入' }]
+        name: [{ required: true, trigger: 'blur', message: '角色名必须输入' }]
       }
     }
   },
@@ -70,28 +76,28 @@ export default {
 
     saveData() {
       roleApi.saveRole(this.role).then(response => {
-        if (response.code === "20000") {
           this.$message({
             type: 'success',
             message: response.msg
           })
           this.$router.push({ path: '/acl/role/list' })
-        }
-      })
+      }).catch(() => {
+        this.saveBtnDisabled = false
+      });
     },
 
     // 根据id更新记录
     updateData() {
       // teacher数据的获取
       roleApi.updateRole(this.role).then(response => {
-        if (response.code === "20000") {
           this.$message({
             type: 'success',
             message: response.msg
           })
           this.$router.push({ path: '/acl/role/list' })
-        }
-      })
+      }).catch(() => {
+        this.saveBtnDisabled = false
+      });
     },
 
     // 根据id查询记录

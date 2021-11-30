@@ -43,12 +43,12 @@
 
       <el-table-column prop="nickName" label="用户昵称" />
 
-      <el-table-column prop="gmtCreate" label="创建时间" width="180"/>
+      <el-table-column prop="createdTime" label="创建时间" width="180"/>
 
       <el-table-column label="操作" width="230" align="center">
         <template slot-scope="scope">
           <router-link :to="'/acl/user/role/'+scope.row.id">
-            <el-button type="info" size="mini" icon="el-icon-info" v-if="hasPerm('user.assgin')"></el-button>
+            <el-button type="info" size="mini" icon="el-icon-info" v-if="hasPerm('user.assign')"></el-button>
           </router-link>
           <router-link :to="'/acl/user/update/'+scope.row.id">
             <el-button type="primary" size="mini" icon="el-icon-edit" v-if="hasPerm('user.update')"></el-button>
@@ -103,7 +103,7 @@ export default {
 
     // 当页码发生改变的时候
     changeSize(size) {
-      userPage.pageSize = size
+      this.userPage.pageSize = size
       this.fetchData(1)
     },
 
@@ -116,7 +116,7 @@ export default {
       // 异步获取远程数据（ajax）
       this.userPage.page = page
 
-      userApi.pageUser(userPage).then(
+      userApi.pageUser(this.userPage).then(
         response => {
           this.list = response.data.rows
           this.total = response.data.total
@@ -129,7 +129,7 @@ export default {
 
     // 重置查询表单
     resetData() {
-      this.userPage.username = {}
+      this.userPage.username = ''
       this.fetchData()
     },
 
@@ -201,17 +201,6 @@ export default {
           message: '已取消删除'
         })
       })
-    },
-
-    // 执行搜索
-    // queryString：文本框中输入的值
-    // cb：一个函数
-    querySearch(queryString, cb) {
-
-      // teacher.selectNameByKey(queryString).then(response => {
-      //   // 调用 callback 返回建议列表的数据
-      //   cb(response.data.items)
-      // })
     }
   }
 }

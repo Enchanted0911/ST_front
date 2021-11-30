@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">用户名:{{ name }}</div>
+    <div class="dashboard-text">用户名:{{ username }}</div>
     <div class="dashboard-text">用户角色:<span v-for="role in roles" :key="role">{{ role }}</span></div>
   </div>
 </template>

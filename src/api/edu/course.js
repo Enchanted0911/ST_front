@@ -13,7 +13,7 @@ export default {
         return request({
             url: `${api_name}`,
             method: 'get',
-            data: coursePage
+            params: coursePage
         })
     },
     saveCourseBaseInfo(courseBaseInfo) {

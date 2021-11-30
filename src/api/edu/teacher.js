@@ -19,7 +19,7 @@ export default {
         return request({
             url: `${api_name}/page`,
             method: 'get',
-            data: teacherPage
+            params: teacherPage
         })
     },
     saveTeacher(teacher) {
