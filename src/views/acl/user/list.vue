@@ -39,11 +39,11 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="username" label="用户名" width="150" />
+      <el-table-column prop="username" label="用户名" width="250" />
 
       <el-table-column prop="nickName" label="用户昵称" />
 
-      <el-table-column prop="createdTime" label="创建时间" width="180"/>
+      <el-table-column prop="createdTime" label="创建时间" width="380"/>
 
       <el-table-column label="操作" width="230" align="center">
         <template slot-scope="scope">

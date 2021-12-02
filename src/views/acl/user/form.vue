@@ -124,7 +124,7 @@ export default {
           });
           this.$router.push({ path: "/acl/user/list" });
       }).catch(() => {
-        console.log('nothing')
+        this.saveBtnDisabled = false
       });
     },
 

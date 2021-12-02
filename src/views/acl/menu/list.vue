@@ -1,13 +1,13 @@
 <template>
   <div class="app-container">
     <el-input
-      v-model="filterText"
+      v-model="search"
       placeholder="Filter keyword"
       style="margin-bottom: 30px"
     />
 
     <el-table
-      :data="menuList"
+      :data="menuList.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
       style="width: 100%; margin-bottom: 20px"
       row-key="id"
       border
@@ -148,8 +148,9 @@ const perForm = {
 export default {
   data() {
     return {
-      filterText: "",
+      search: '',
       menuList: [],
+      menuListCp: [],
       defaultProps: {
         children: "children",
         label: "name",
@@ -178,13 +179,6 @@ export default {
       },
     };
   },
-  // 监听上面文本框搜索
-  watch: {
-    filterText(val) {
-      this.$refs.menuTree.filter(val);
-    },
-  },
-
   created() {
     this.fetchNodeList();
   },
@@ -192,14 +186,10 @@ export default {
   methods: {
     fetchNodeList() {
       permission.gainAllPermission().then((response) => {
-        if (response.code === 20000) {
+        if (response.code === "20000") {
           this.menuList = response.data;
         }
       });
-    },
-    filterNode(value, data) {
-      if (!value) return true;
-      return data.title.toLowerCase().indexOf(value.toLowerCase()) !== -1;
     },
     remove(data) {
       this.$confirm("此操作将永久删除该记录, 是否继续?", "提示", {
@@ -208,7 +198,7 @@ export default {
         type: "warning",
       })
         .then(() => {
-          return menu.deletePermission(data.id);
+          permission.deletePermission(data.id);
         })
         .then(() => {
           this.fetchNodeList(); // 刷新列表
