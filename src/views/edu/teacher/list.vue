@@ -98,8 +98,6 @@ import teacherApi from '@/api/edu/teacher'
 
 export default {
   // 写核心代码位置
-  // data:{
-  // },
   data() { // 定义变量和初始值
     return {
       list: null, // 查询之后接口返回集合
@@ -108,7 +106,7 @@ export default {
         page: 1,
         pageSize: 10,
         name: '',
-        level: 0,
+        level: null,
         begin: '',
         end: ''
       }
@@ -122,11 +120,9 @@ export default {
     // 讲师列表的方法
     getList(page = 1) {
       this.page = page
-      teacherApi.pageTeacher(teacherPage)
+      teacherApi.pageTeacher(this.teacherPage)
         .then(response => {
           // 请求成功
-          // response接口返回的数据
-          // console.log(response)
           this.list = response.data.rows
           this.total = response.data.total
         })

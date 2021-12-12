@@ -29,7 +29,7 @@
     <el-table :data="list" border fit highlight-current-row>
       <el-table-column label="序号" width="70" align="center">
         <template slot-scope="scope">
-          {{ (courpage.page - 1) * coursePage.pageSize + scope.$index + 1 }}
+          {{ (coursePage.page - 1) * coursePage.pageSize + scope.$index + 1 }}
         </template>
       </el-table-column>
 
@@ -54,7 +54,7 @@
       />
 
       <el-table-column
-        prop="gmtCreate"
+        prop="createdTime"
         label="添加时间"
         width="260"
         align="center"

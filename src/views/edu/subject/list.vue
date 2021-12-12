@@ -23,7 +23,7 @@ export default {
       filterText: '',
       data2: [],  //返回所有分类数据
       defaultProps: {
-        children: 'children',
+        children: 'subjectTwoResList',
         label: 'title'
       }
     }
@@ -41,7 +41,7 @@ export default {
     getAllSubjectList() {
         subjectApi.gainSubject()
             .then(response => {
-                this.data2 = response.data.list
+                this.data2 = response.data
             })
     },
     filterNode(value, data) {

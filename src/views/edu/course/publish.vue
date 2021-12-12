@@ -62,7 +62,7 @@ export default {
     },
 
     publish() {
-      course.publishCourse(this.courseId)
+      courseApi.publishCourse(this.courseId)
         .then(response => {
           //提示
           this.$message({

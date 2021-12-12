@@ -5,13 +5,13 @@ const api_name = '/rabbit/back/course'
 export default {
     gainCourseOutline(id) {
         return request({
-            url: `${api_name}/${id}`,
+            url: `${api_name}/outline/${id}`,
             method: 'get',
         })
     },
     pageCourse(coursePage) {
         return request({
-            url: `${api_name}`,
+            url: `${api_name}/page`,
             method: 'get',
             params: coursePage
         })

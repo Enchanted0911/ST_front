@@ -52,6 +52,8 @@ export default {
             this.loading = true
             // js: document.getElementById("upload").submit()
             this.$refs.upload.submit()
+            this.importBtnDisabled = false
+            this.loading = false
         },
         //上传成功
         fileUploadSuccess(response) {

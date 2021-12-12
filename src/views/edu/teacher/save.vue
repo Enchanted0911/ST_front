@@ -28,7 +28,7 @@
       <!-- 讲师头像 -->
       <el-form-item label="讲师头像">
         <!-- 头衔缩略图 -->
-        <pan-thumb :image="teacher.avatar" />
+        <pan-thumb :image="String(teacher.avatar)" />
         <!-- 文件上传按钮 -->
         <el-button
           type="primary"
@@ -111,7 +111,7 @@ export default {
     cropSuccess(data) {
       this.imagecropperShow = false
       // 上传之后接口返回图片地址
-      this.teacher.avatar = data.url
+      this.teacher.avatar = data
       this.imagecropperKey = this.imagecropperKey + 1
     },
     init() {

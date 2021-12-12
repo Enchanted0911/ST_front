@@ -16,7 +16,7 @@
     <el-button type="text" @click="openChapterDialog()">添加章节</el-button>
 
     <!-- 章节 -->
-    <ul class="chanpterList">
+    <ul class="chapter">
       <li v-for="chapter in chapterVideoList" :key="chapter.id">
         <p>
           {{ chapter.title }}
@@ -25,7 +25,7 @@
             <el-button style="" type="text" @click="openVideo(chapter.id)"
               >添加小节</el-button
             >
-            <el-button style="" type="text" @click="openEditChatper(chapter.id)"
+            <el-button style="" type="text" @click="openEditChapter(chapter.id)"
               >编辑</el-button
             >
             <el-button type="text" @click="removeChapter(chapter.id)"
@@ -35,8 +35,8 @@
         </p>
 
         <!-- 视频 -->
-        <ul class="chanpterList videoList">
-          <li v-for="video in chapter.children" :key="video.id">
+        <ul class="chapterList videoList">
+          <li v-for="video in chapter.courseSubsectionResList" :key="video.id">
             <p>
               {{ video.title }}
 
@@ -82,19 +82,19 @@
 
     <!-- 添加和修改课时表单 -->
     <el-dialog :visible.sync="dialogVideoFormVisible" title="添加课时">
-      <el-form :model="video" label-width="120px">
+      <el-form :model="subsection" label-width="120px">
         <el-form-item label="课时标题">
-          <el-input v-model="video.title" />
+          <el-input v-model="subsection.title" />
         </el-form-item>
         <el-form-item label="课时排序">
           <el-input-number
-            v-model="video.sort"
+            v-model="subsection.sort"
             :min="0"
             controls-position="right"
           />
         </el-form-item>
         <el-form-item label="是否免费">
-          <el-radio-group v-model="video.free">
+          <el-radio-group v-model="subsection.ifFree">
             <el-radio :label="true">免费</el-radio>
             <el-radio :label="false">默认</el-radio>
           </el-radio-group>
@@ -106,7 +106,7 @@
             :before-remove="beforeVodRemove"
             :on-exceed="handleUploadExceed"
             :file-list="fileList"
-            :action="BASE_API + '/eduVod/video/uploadAlyVideo'"
+            :action="BASE_API + '/rabbit/back/vod'"
             :limit="1"
             class="upload-demo"
           >
@@ -145,6 +145,7 @@ export default {
   data() {
     return {
       saveBtnDisabled: false,
+      saveVideoBtnDisabled: false,
       courseId: "", //课程id
       chapterVideoList: [],
       chapter: {
@@ -153,9 +154,10 @@ export default {
         sort: 0,
       },
       subsection: {
+        id: '',
         title: "",
         sort: 0,
-        free: 0,
+        ifFree: 0,
         videoSourceId: "",
         videoOriginalName: "",
       },
@@ -199,7 +201,7 @@ export default {
     //上传视频成功调用的方法
     handleVodUploadSuccess(response, file, fileList) {
       //上传视频id赋值
-      this.subsection.videoSourceId = response.data.videoId;
+      this.subsection.videoSourceId = response.data;
       //上传视频名称赋值
       this.subsection.videoOriginalName = file.name;
     },
@@ -258,7 +260,7 @@ export default {
       //弹框
       this.dialogVideoFormVisible = true;
       //调用接口
-      subsection.gainCourseSubsection(videoId).then((response) => {
+      subsectionApi.gainCourseSubsection(videoId).then((response) => {
         this.subsection = response.data;
         if (this.subsection.videoOriginalName != "" && this.subsection.videoOriginalName != null) {
           this.fileList = [{ name: this.subsection.videoOriginalName, url: "" }];
@@ -271,7 +273,7 @@ export default {
     updateVideo() {
       //设置课程id
       this.subsection.courseId = this.courseId;
-      subsectionApi.updateCourseSubsection(this.video).then((response) => {
+      subsectionApi.updateCourseSubsection(this.subsection).then((response) => {
         //关闭弹框
         this.dialogVideoFormVisible = false;
         //提示
@@ -314,7 +316,7 @@ export default {
       }); //点击取消，执行catch方法
     },
     //修改章节弹框数据回显
-    openEditChatper(chapterId) {
+    openEditChapter(chapterId) {
       //弹框
       this.dialogChapterFormVisible = true;
       //调用接口
@@ -366,10 +368,9 @@ export default {
         this.updateChapter();
       }
     },
-    //根据课程id查询章节和小节
     getChapterVideo() {
       courseApi.gainCourseOutline(this.courseId).then((response) => {
-        this.chapterVideoList = response.data.allChapterVideo;
+        this.chapterVideoList = response.data;
       });
     },
     previous() {
@@ -383,16 +384,16 @@ export default {
 };
 </script>
 <style scoped>
-.chanpterList {
+.chapterList {
   position: relative;
   list-style: none;
   margin: 0;
   padding: 0;
 }
-.chanpterList li {
+.chapterList li {
   position: relative;
 }
-.chanpterList p {
+.chapterList p {
   float: left;
   font-size: 20px;
   margin: 10px 0;
@@ -402,7 +403,7 @@ export default {
   width: 100%;
   border: 1px solid #ddd;
 }
-.chanpterList .acts {
+.chapterList .acts {
   float: right;
   font-size: 14px;
 }
