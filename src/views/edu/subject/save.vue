@@ -14,6 +14,7 @@
         <el-upload
           ref="upload"
           :auto-upload="false"
+          :headers="authHeader"
           :on-success="fileUploadSuccess"
           :on-error="fileUploadError"
           :disabled="importBtnDisabled"
@@ -34,12 +35,15 @@
   </div>
 </template>
 <script>
+import store from '@/store'
+import { getToken } from '@/utils/auth'
 export default {
     data() {
         return {
             BASE_API: process.env.VUE_APP_BASE_API, // 接口API地址
             importBtnDisabled: false, // 按钮是否禁用,
-            loading: false
+            loading: false,
+            authHeader: {'Authorization': ''}
         }
     },
     created() {
@@ -50,6 +54,11 @@ export default {
         submitUpload() {
             this.importBtnDisabled = true
             this.loading = true
+
+            // 设置header
+            if (store.getters.token) {
+              this.authHeader['Authorization'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
+            }
             // js: document.getElementById("upload").submit()
             this.$refs.upload.submit()
             this.importBtnDisabled = false
@@ -65,7 +74,7 @@ export default {
             })
             //跳转课程分类列表
             //路由跳转
-            this.$router.push({path:'/subject/list'})
+            this.$router.push({path:'/edu/subject/list'})
         },
         //上传失败
         fileUploadError() {

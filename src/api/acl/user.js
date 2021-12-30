@@ -45,5 +45,25 @@ export default {
             method: 'delete',
             data: userIdList
         })
+    },
+    updateUserSelf(user) {
+        return request({
+            url: `${api_name}/self-info`,
+            method: 'put',
+            data: user
+        })
+    },
+    updatePassword(password) {
+        return request({
+            url: `${api_name}/password`,
+            method: 'put',
+            data: password
+        })
+    },
+    currentUserInfo() {
+        return request({
+            url: `${api_name}`,
+            method: 'get'
+        })
     }
 }

@@ -103,7 +103,9 @@
           <el-upload
             :on-success="handleVodUploadSuccess"
             :on-remove="handleVodRemove"
+            :headers="authHeader"
             :before-remove="beforeVodRemove"
+            :before-upload="beforeUpload"
             :on-exceed="handleUploadExceed"
             :file-list="fileList"
             :action="BASE_API + '/rabbit/back/vod'"
@@ -140,7 +142,9 @@
 import chapterApi from "@/api/edu/chapter";
 import subsectionApi from "@/api/edu/subsection";
 import courseApi from "@/api/edu/course";
-
+import vodApi from "@/api/edu/vod";
+import store from '@/store'
+import { getToken } from '@/utils/auth'
 export default {
   data() {
     return {
@@ -164,7 +168,8 @@ export default {
       dialogChapterFormVisible: false, //章节弹框
       dialogVideoFormVisible: false, //小节弹框
       fileList: [], //上传文件列表
-      BASE_API: process.env.VUE_APP_BASE_API, // 接口API地址
+      BASE_API: process.env.VUE_APP_BASE_API,
+      authHeader: {'Authorization': ''} // 接口API地址
     };
   },
   created() {
@@ -176,10 +181,16 @@ export default {
     }
   },
   methods: {
+    beforeUpload(file) {
+      // 设置header
+      if (store.getters.token) {
+        this.authHeader["Authorization"] = getToken(); // 让每个请求携带自定义token 请根据实际情况自行修改
+      }
+    },
     //点击确定调用的方法
     handleVodRemove() {
       //调用接口的删除视频的方法
-      subsectionApi.deleteAlyVod(this.subsection.videoSourceId).then((response) => {
+      vodApi.removeAlyVideo(this.subsection.videoSourceId).then((response) => {
         //提示信息
         this.$message({
           type: "success",

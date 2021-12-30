@@ -21,7 +21,7 @@
           type="primary"
           icon="el-icon-upload"
           @click="toggleShow()"
-        >更换banner
+        >上传banner
         </el-button>
         <image-cropper
           v-show="show"
@@ -30,7 +30,7 @@
           no-square
           :width="1920"
           :height="480"
-          :url="BASE_API + '/eduOss/fileOss/banner'"
+          :url="BASE_API + '/rabbit/back/oss/banner'"
           field="file"
           @close="close"
           @crop-upload-success="cropSuccess"
@@ -90,7 +90,7 @@ export default {
     cropSuccess(data) {
       this.show = false
       // 上传之后接口返回图片地址
-      this.banner.imageUrl = data.url
+      this.banner.imageUrl = data
       this.imagecropperKey = this.imagecropperKey + 1
     },
     init() {
@@ -108,7 +108,7 @@ export default {
     },
     // 根据banner id查询的方法
     getInfo(id) {
-      bannerApi.getBannerInfo(id).then((response) => {
+      bannerApi.bannerDetails(id).then((response) => {
         this.banner = response.data
       })
     },
@@ -121,7 +121,7 @@ export default {
     },
     // 修改banner的方法
     updateBanner() {
-      bannerApi.updateBannerInfo(this.banner).then((response) => {
+      bannerApi.updateBanner(this.banner).then((response) => {
         // 提示信息
         this.$message({
           type: 'success',
@@ -133,7 +133,7 @@ export default {
     },
     // 添加banner的方法
     saveBanner() {
-      bannerApi.addBanner(this.banner).then((response) => {
+      bannerApi.saveBanner(this.banner).then((response) => {
         // 添加成功
         // 提示信息
         this.$message({

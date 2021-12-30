@@ -46,7 +46,30 @@ export const constantRoutes = [{
                     import ('@/views/dashboard/index'),
                 meta: { title: '春雷课堂后台首页', icon: 'dashboard' }
             }]
-        }
+        },
+        {
+            path: '/user',
+            component: Layout,
+            redirect: '/user/info',
+            name: '个人信息',
+            meta: { title: '讲师管理', icon: 'example' },
+            children: [{
+                    path: 'info',
+                    name: '个人信息',
+                    component: () =>
+                        import ('@/views/user/info'),
+                    meta: { title: '个人信息', icon: 'table' }
+                },
+                {
+                    path: 'password',
+                    name: '修改密码',
+                    component: () =>
+                        import ('@/views/user/password'),
+                    meta: { title: '修改密码', icon: 'table' }
+                }
+            ],
+            hidden: true
+        },
     ]
     /**
      * 动态路由

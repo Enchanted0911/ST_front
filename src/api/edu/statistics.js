@@ -6,7 +6,7 @@ export default {
     //1 生成统计数据
     registerCount(date) {
         return request({
-            url: `${api_name}/${date}`,
+            url: `${api_name}/register-num/${date}`,
             method: 'post'
         })
     },

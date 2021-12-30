@@ -66,7 +66,7 @@
 
       <el-table-column prop="intro" label="资历" />
 
-      <el-table-column prop="gmtCreate" label="添加时间" width="160" />
+      <el-table-column prop="createdTime" label="添加时间" width="160" />
 
       <el-table-column prop="sort" label="排序" width="60" />
 

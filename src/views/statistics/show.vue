@@ -57,7 +57,6 @@ export default {
   methods: {
     showChart() {
       statistics.showData(this.searchObj).then((response) => {
-        console.log("*****************" + response);
         this.yData = response.data.numDataList;
         this.xData = response.data.dateCalculatedList;
 

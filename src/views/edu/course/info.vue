@@ -81,10 +81,11 @@
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload"
+          :headers="authHeader"
           :action="BASE_API + '/rabbit/back/oss/course-cover'"
           class="avatar-uploader"
         >
-          <img :src="courseInfo.cover">
+          <img :src="courseInfo.cover" />
         </el-upload>
       </el-form-item>
 
@@ -103,49 +104,53 @@
           :disabled="saveBtnDisabled"
           type="primary"
           @click="saveOrUpdate"
-        >保存并下一步</el-button>
+          >保存并下一步</el-button
+        >
       </el-form-item>
     </el-form>
   </div>
 </template>
 <script>
-import courseApi from '@/api/edu/course'
-import subjectApi from '@/api/edu/subject'
-import teacherApi from '@/api/edu/teacher'
-import Tinymce from '@/components/Tinymce'
+import courseApi from "@/api/edu/course";
+import subjectApi from "@/api/edu/subject";
+import teacherApi from "@/api/edu/teacher";
+import Tinymce from "@/components/Tinymce";
+import store from "@/store";
+import { getToken } from "@/utils/auth";
 export default {
   components: { Tinymce },
   data() {
     return {
       saveBtnDisabled: false,
       courseInfo: {
-        title: '',
-        subjectId: '', // 二级分类id
-        subjectParentId: '', // 一级分类id
-        teacherId: '',
+        title: "",
+        subjectId: "", // 二级分类id
+        subjectParentId: "", // 一级分类id
+        teacherId: "",
         lessonNum: 0,
-        description: '',
-        cover: '/public/01.jpg',
-        price: 0
+        description: "",
+        cover: "/public/01.jpg",
+        price: 0,
       },
-      courseId: '',
+      courseId: "",
       BASE_API: process.env.VUE_APP_BASE_API, // 接口API地址
       teacherList: [], // 封装所有的讲师
       subjectOneList: [], // 一级分类
-      subjectTwoList: [] // 二级分类
-    }
+      subjectTwoList: [], // 二级分类
+      authHeader: { Authorization: "" },
+    };
   },
   created() {
     // 获取路由id值
     if (this.$route.params && this.$route.params.id) {
-      this.courseId = this.$route.params.id
+      this.courseId = this.$route.params.id;
       // 调用根据id查询课程的方法
-      this.getInfo()
+      this.getInfo();
     } else {
       // 初始化所有讲师
-      this.getListTeacher()
+      this.getListTeacher();
       // 初始化一级分类
-      this.getOneSubject()
+      this.getOneSubject();
     }
   },
   methods: {
@@ -153,42 +158,47 @@ export default {
     getInfo() {
       courseApi.gainCourseBaseInfo(this.courseId).then((response) => {
         // 在courseInfo课程基本信息，包含 一级分类id 和 二级分类id
-        this.courseInfo = response.data
+        this.courseInfo = response.data;
         // 1 查询所有的分类，包含一级和二级
         subjectApi.gainSubject().then((response) => {
           // 2 获取所有一级分类
-          this.subjectOneList = response.data
+          this.subjectOneList = response.data;
           // 3 把所有的一级分类数组进行遍历，
           for (var i = 0; i < this.subjectOneList.length; i++) {
             // 获取每个一级分类
-            var oneSubject = this.subjectOneList[i]
+            var oneSubject = this.subjectOneList[i];
             // 比较当前courseInfo里面一级分类id和所有的一级分类id
             if (this.courseInfo.subjectParentId === oneSubject.id) {
               // 获取一级分类所有的二级分类
-              this.subjectTwoList = oneSubject.subjectTwoResList
+              this.subjectTwoList = oneSubject.subjectTwoResList;
             }
           }
-        })
+        });
         // 初始化所有讲师
-        this.getListTeacher()
-      })
+        this.getListTeacher();
+      });
     },
     // 上传封面成功调用的方法
     handleAvatarSuccess(res, file) {
-      this.courseInfo.cover = res.data.url
+      this.courseInfo.cover = res.data;
     },
     // 上传之前调用的方法
     beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg'
-      const isLt2M = file.size / 1024 / 1024 < 8
+      // 设置header
+      if (store.getters.token) {
+        this.authHeader["Authorization"] = getToken(); // 让每个请求携带自定义token 请根据实际情况自行修改
+      }
+
+      const isJPG = file.type === "image/jpeg";
+      const isLt2M = file.size / 1024 / 1024 < 8;
 
       if (!isJPG) {
-        this.$message.error('上传封面图片只能是 JPG 格式!')
+        this.$message.error("上传封面图片只能是 JPG 格式!");
       }
       if (!isLt2M) {
-        this.$message.error('上传封面图片大小不能超过 8MB!')
+        this.$message.error("上传封面图片大小不能超过 8MB!");
       }
-      return isJPG && isLt2M
+      return isJPG && isLt2M;
     },
     // 点击某个一级分类，触发change，显示对应二级分类
     subjectLevelOneChanged(value) {
@@ -196,65 +206,65 @@ export default {
       // 遍历所有的分类，包含一级和二级
       for (var i = 0; i < this.subjectOneList.length; i++) {
         // 每个一级分类
-        var oneSubject = this.subjectOneList[i]
+        var oneSubject = this.subjectOneList[i];
         // 判断：所有一级分类id 和 点击一级分类id是否一样
         if (value === oneSubject.id) {
           // 从一级分类获取里面所有的二级分类
-          this.subjectTwoList = oneSubject.subjectTwoResList
+          this.subjectTwoList = oneSubject.subjectTwoResList;
           // 把二级分类id值清空
-          this.courseInfo.subjectId = ''
+          this.courseInfo.subjectId = "";
         }
       }
     },
     // 查询所有的一级分类
     getOneSubject() {
       subjectApi.gainSubject().then((response) => {
-        this.subjectOneList = response.data
-      })
+        this.subjectOneList = response.data;
+      });
     },
     // 查询所有的讲师
     getListTeacher() {
       teacherApi.listTeacher().then((response) => {
-        this.teacherList = response.data
-      })
+        this.teacherList = response.data;
+      });
     },
     // 添加课程
     addCourse() {
       courseApi.saveCourseBaseInfo(this.courseInfo).then((response) => {
         // 提示
         this.$message({
-          type: 'success',
-          message: '添加课程信息成功!'
-        })
+          type: "success",
+          message: "添加课程信息成功!",
+        });
         // 跳转到第二步
         this.$router.push({
-          path: '/edu/course/chapter/' + response.data
-        })
-      })
+          path: "/edu/course/chapter/" + response.data,
+        });
+      });
     },
     // 修改课程
     updateCourse() {
       courseApi.updateCourseBaseInfo(this.courseInfo).then((response) => {
         // 提示
         this.$message({
-          type: 'success',
-          message: '修改课程信息成功!'
-        })
+          type: "success",
+          message: "修改课程信息成功!",
+        });
         // 跳转到第二步
-        this.$router.push({ path: '/edu/course/chapter/' + this.courseId })
-      })
+        this.$router.push({ path: "/edu/course/chapter/" + this.courseId });
+      });
     },
     saveOrUpdate() {
       // 判断添加还是修改
       if (!this.courseInfo.id) {
         // 添加
-        this.addCourse()
+        this.addCourse();
       } else {
-        this.updateCourse()
+        this.updateCourse();
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 <style scoped>
 .tinymce-container {

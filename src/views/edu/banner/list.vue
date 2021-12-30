@@ -65,7 +65,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="gmtCreate" label="添加时间" width="160" sortable />
+      <el-table-column prop="createdTime" label="添加时间" width="160" sortable />
 
       <el-table-column prop="sort" label="排序" width="80" sortable align="center" />
 
@@ -126,7 +126,7 @@ export default {
     },
     getList(page = 1) {
       this.bannerPage.page = page
-      banner.getBannerListPage(bannerPage)
+      banner.pageBanner(this.bannerPage)
         .then(response => {
           // 请求成功
           // response接口返回的数据
@@ -142,13 +142,13 @@ export default {
       this.getList()
     },
     removeDataById(id) {
-      this.$confirm('此操作将永久删除讲师记录, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除banner记录, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => { // 点击确定，执行then方法
         // 调用删除的方法
-        banner.deleteBannerById(id)
+        banner.removeBanner(id)
           .then(response => { // 删除成功
             // 提示信息
             this.$message({
