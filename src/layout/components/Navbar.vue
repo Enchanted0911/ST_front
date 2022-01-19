@@ -18,6 +18,11 @@
             个人信息
           </el-dropdown-item>
         </router-link>
+        <router-link class="inlineBlock" to="/user/password">
+          <el-dropdown-item>
+            修改密码
+          </el-dropdown-item>
+        </router-link>
         <el-dropdown-item divided>
           <span style="display:block;" @click="logout">登出</span>
         </el-dropdown-item>

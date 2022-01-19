@@ -54,6 +54,9 @@ import ImageCropper from "@/components/ImageCropper";
 import PanThumb from "@/components/PanThumb";
 export default {
   components: { ImageCropper, PanThumb },
+  mounted() {
+    window.Vue = this;
+  },
   data() {
     return {
       user: {
@@ -109,7 +112,7 @@ export default {
     fetchData() {
       userApi.currentUserInfo().then((response) => {
         this.user = response.data;
-        this.recoverUser = response.data;
+        this.recoverUser = JSON.parse(JSON.stringify(this.user))
       });
     },
     submitForm(formName) {
@@ -132,10 +135,9 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
-      // this.user = {}
     },
     recoverForm() {
-      this.user = this.recoverUser;
+      this.user = JSON.parse(JSON.stringify(this.recoverUser))
     },
   },
 };
