@@ -56,19 +56,19 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="name" label="名称" width="80" />
+      <el-table-column prop="name" label="名称" width="80" align="center" />
 
-      <el-table-column label="头衔" width="80">
+      <el-table-column label="头衔" width="80" align="center">
         <template slot-scope="scope">
           {{ scope.row.level===1?'高级讲师':'首席讲师' }}
         </template>
       </el-table-column>
 
-      <el-table-column prop="intro" label="资历" />
+      <el-table-column prop="intro" label="资历" align="center" />
 
-      <el-table-column prop="createdTime" label="添加时间" width="160" />
+      <el-table-column prop="createdTime" label="添加时间" align="center" width="160" />
 
-      <el-table-column prop="sort" label="排序" width="60" />
+      <el-table-column prop="sort" label="排序" width="60" align="center" />
 
       <el-table-column label="操作" width="200" align="center">
         <template slot-scope="scope">
@@ -119,7 +119,7 @@ export default {
   methods: { // 创建具体的方法，调用teacher.js定义的方法
     // 讲师列表的方法
     getList(page = 1) {
-      this.page = page
+      this.teacherPage.page = page
       teacherApi.pageTeacher(this.teacherPage)
         .then(response => {
           // 请求成功
@@ -129,7 +129,7 @@ export default {
     },
     resetData() { // 清空的方法
       // 表单输入项数据清空
-      this.teacherQuery = {}
+      this.teacherPage = {page: 1, pageSize: 10}
       // 查询所有讲师数据
       this.getList()
     },

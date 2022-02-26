@@ -142,7 +142,7 @@ export default {
     resetData() {
       //清空的方法
       //表单输入项数据清空
-      this.courseQuery = {};
+      this.coursePage = {page: 1, pageSize: 10};
       //查询所有讲师数据
       this.getList();
     },

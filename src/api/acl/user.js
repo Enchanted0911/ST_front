@@ -25,7 +25,12 @@ export default {
             params: userPage
         })
     },
-
+    listUser() {
+        return request({
+            url: `${api_name}/list`,
+            method: 'get'
+        })
+    },
     updateUser(user) {
         return request({
             url: `${api_name}`,

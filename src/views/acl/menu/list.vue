@@ -158,8 +158,8 @@ export default {
       dialogFormValue: "添加菜单",
       dialogFormVisible: false,
       dialogPermissionVisible: false,
-      menu: menuForm,
-      permission: perForm,
+      menu: {...menuForm},
+      permission: {...perForm},
       menuValidateRules: {
         name: [{ required: true, trigger: "blur", message: "菜单名必须输入" }],
         path: [
