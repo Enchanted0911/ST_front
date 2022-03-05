@@ -12,6 +12,22 @@
           :min="0"
         />
       </el-form-item>
+      <el-form-item label="讲师管理员账户">
+        <el-select
+          v-model="teacher.aclUserId"
+          clearable
+          filterable
+          placeholder="管理员账户"
+        >
+          <el-option
+            v-for="item in aclUserList"
+            :key="item.id"
+            :label="item.username"
+            :value="item.id"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="讲师头衔">
         <el-select v-model="teacher.level" clearable placeholder="请选择">
           <el-option :value="1" label="高级讲师" />
@@ -70,6 +86,7 @@
 import teacherApi from '@/api/edu/teacher'
 import ImageCropper from '@/components/ImageCropper'
 import PanThumb from '@/components/PanThumb'
+import userApi from "@/api/acl/user";
 export default {
   components: { ImageCropper, PanThumb },
   data() {
@@ -80,9 +97,11 @@ export default {
         level: 1,
         career: '',
         intro: '',
-        avatar: ''
+        avatar: '',
+        aclUserId: ''
       },
 
+      aclUserList: [],
       // 上传弹框组件是否显示
       imagecropperShow: false,
       imagecropperKey: 0, // 上传组件key值
@@ -100,8 +119,14 @@ export default {
   created() {
     // 页面渲染之前执行
     this.init()
+    this.getAclUserList();
   },
   methods: {
+    getAclUserList() {
+      userApi.listUser().then((response) => {
+        this.aclUserList = response.data;
+      });
+    },
     close() { // 关闭上传弹框的方法
       this.imagecropperShow = false
       // 上传组件初始化

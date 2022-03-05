@@ -3,7 +3,7 @@
     <h2 style="text-align: center">编辑文章信息</h2>
 
     <el-form label-width="120px">
-      <el-form-item label="课程标题">
+      <el-form-item label="文章标题">
         <el-input
           v-model="articleInfo.title"
           placeholder=" 示例：年度十佳牛马人"
@@ -84,7 +84,7 @@ export default {
     // 获取路由id值
     if (this.$route.params && this.$route.params.id) {
       this.articleId = this.$route.params.id;
-      // 调用根据id查询课程的方法
+      // 调用根据id查询文章的方法
       this.getInfo();
     } else {
       // 初始化一级分类
@@ -136,7 +136,7 @@ export default {
         this.subjectOneList = response.data;
       });
     },
-    // 添加课程
+    // 添加文章
     addArticle() {
       articleApi.saveArticle(this.articleInfo).then((response) => {
         // 提示
@@ -150,7 +150,7 @@ export default {
         });
       });
     },
-    // 修改课程
+    // 修改文章
     updateArticle() {
         this.articleInfo.id = this.articleId
       articleApi.updateArticle(this.articleInfo).then((response) => {
